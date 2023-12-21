@@ -1,127 +1,106 @@
-#include <iostream>
-#include <vector>
-#include <map>
-#include <math.h>
-#include <algorithm>
+#include <bits/stdc++.h>
 using namespace std;
 #define newl "\n"
 #define deb(x) cout << (#x) << ":" << x << endl;
-#define ll long long
-/*
-How to solve
-Only one non falsy truth is enough, to break the question.
-
-
-How to build logic
-1. Find one pattern | Break Problem to Smaller chunks & solve
-2. Build logic constructively.
-3. Test the logic w different tc including all ec.
-First prepare a set of tc w ip and op, then test the algo w those tc.
-
-
-
-How to implement
-An algo   contains multiple steps      which contains multiple details.
-A program contains multiple Block which contains multiple lines.
-1. Write all steps wo details
-2. For each step, write details if any
-3. Note down reoccuring details - these are reusable components
-4. For each detail start implementing solution
-Things to take care while implementing
-- Follow proper naming
-- Corner case handling
-
-How to review
-Go Blockwise | Stepwise:
-1. Read the step details and be clear what this block trying to do
-2. Verify syntactical correctness
-3. Edge cases handling, by analyzing two extremes
-
-All effects should be well thought of before state changing commit
-*/
-int max_subarr(vector<int> arr)
+#define yes "Yes";
+#define int long long
+#define no "No";
+void solve(int test_case)
 {
-    int max_sum = 0;
-    int curr_sum = 0;
-    for (auto ele : arr)
+
+    int n, m;
+    cin >> n >> m;
+
+    vector<int> rowsacc(n);
+    vector<int> colsacc(m);
+    vector<string> vs(n);
+    for (auto &ele : vs)
+        cin >> ele;
+    // rowsacc
+    for (int row = 0; row < n; row++)
     {
-        curr_sum += ele;
-        // deb(ele);
-        if (curr_sum < 0)
+        for (int col = 0; col < m; col++)
         {
-            curr_sum = 0;
-        }
-        max_sum = max(max_sum, curr_sum);
-    }
-    return max_sum;
-}
-int primeSeive[1001] = {0};
-int maxPrimeTill = 0;
-void generateSeive()
-{
-    primeSeive[0] = primeSeive[1] = 1;
-    // primeSeive[2] = 2;
-    int c = 0;
-    for (int i = 2; i < sizeof(primeSeive) / sizeof(primeSeive[0]); i++)
-    {
-        if (!primeSeive[i])
-        {
-            c++;
-            primeSeive[i] = c;
-            // cout << i << " ";
-            for (int j = 2 * i; j < sizeof(primeSeive) / sizeof(primeSeive[0]); j += i)
+            if (vs[row][col] == 'U')
             {
-                if (!primeSeive[j])
-                    primeSeive[j] = c;
+                rowsacc[row]++;
+            }
+        }
+        if (rowsacc[row] & 1)
+        {
+            cout << -1 << newl;
+            return;
+        }
+    }
+    // colsacc
+    for (int col = 0; col < m; col++)
+    {
+        for (int row = 0; row < n; row++)
+        {
+            if (vs[row][col] == 'L')
+            {
+                colsacc[col]++;
+            }
+        }
+        if (colsacc[col] & 1)
+        {
+            cout << -1 << newl;
+            return;
+        }
+    }
+
+    // row wise traversal, fill u,d as W,B
+    for (int row = 0; row < n; row++)
+    {
+        int half = rowsacc[row] / 2;
+        if (!half)
+            continue;
+        for (int col = 0; col < m; col++)
+        {
+            if (vs[row][col] == 'U')
+            {
+                bool w = half <= 0 ? false : true;
+                vs[row][col] = w ? 'W' : 'B';
+                vs[row + 1][col] = !w ? 'W' : 'B';
+                half--;
             }
         }
     }
-    maxPrimeTill = c;
-}
-void solve()
-{
-    int n;
-    cin >> n;
-    vector<int> arr(n);
-    for (auto &ele : arr)
-        cin >> ele;
-    int maxe = 1;
-    bool vis[12] = {false};
-    int mapping[12] = {0};
-    for (auto ele : arr)
+    // col wise traversal, fill l,r as W,B
+    for (int col = 0; col < m; col++)
     {
-        maxe = max(maxe, primeSeive[ele]);
-        vis[primeSeive[ele]] = true;
-    }
-    int i = 1;
-    int actualCounter = 1;
-    for (; i < 12; i++)
-    {
-        if (vis[i])
+        int half = colsacc[col] / 2;
+        if (!half)
+            continue;
+        for (int row = 0; row < n; row++)
         {
-            mapping[i] = actualCounter;
-            actualCounter++;
+            if (vs[row][col] == 'L')
+            {
+                bool w = half <= 0 ? false : true;
+                vs[row][col] = w ? 'W' : 'B';
+                vs[row][col + 1] = !w ? 'W' : 'B';
+                half--;
+            }
         }
     }
-    cout << actualCounter - 1 << newl;
-
-    for (auto ele : arr)
-    {
-        cout << mapping[primeSeive[ele]] << " ";
-    }
+    for (auto ele : vs)
+        cout << ele << newl;
+    // for (auto ele : rowsacc)
+    //     cout << ele << " ";
+    // cout << newl;
+    // for (auto ele : colsacc)
+    //     cout << ele << " ";
 }
-// 3 4 5
-// 1 2 1
-int main()
+signed main()
 {
-    generateSeive();
-    // cout << maxPrimeTill;
     int t{1};
     cin >> t;
     while (t--)
     {
-        solve();
-        cout << newl;
+        solve(t + 1);
+        // cout << newl;
     }
     return 0;
 }
+
+// 10:06

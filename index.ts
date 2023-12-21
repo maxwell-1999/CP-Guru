@@ -1,3 +1,5 @@
+const practice = "15-u";
+
 function randomNumber(min: number, max: number) {
   return Number(Math.floor(Math.random() * (max - min) + min));
 }
@@ -20,7 +22,6 @@ function shuffle(array) {
 
   return array;
 }
-
 const markedText = await Bun.file("./dead_marked.txt").text();
 let deadProblems = markedText
   .split("\n")
@@ -47,8 +48,12 @@ try {
   const submissions = await dd.json();
   const rawSubmissions = submissions.result;
   const rawProblems = allProblems.result.problems;
-  const gym_starting_range = 1300;
-  const gym_ending_range = 1400;
+  const range = practice.split("-");
+  let num = Number(range[0]) * 100;
+  console.log(`num: `, num, practice);
+  const gym_starting_range = range[1] == "l" ? num : num - 100;
+  const gym_ending_range = range[1] == "l" ? num + 100 : num;
+  const lastContest = 1893;
   const difficulty = 1;
 
   const starting_contest = 1220;
@@ -64,7 +69,7 @@ try {
   let notSolved = rawProblems.filter((c) => {
     return (
       c.contestId >= starting_contest &&
-      c.contestId <= 1830 &&
+      c.contestId <= lastContest &&
       c.rating <= gym_ending_range &&
       c.rating >= gym_starting_range
     );
@@ -123,20 +128,20 @@ try {
   const r2 = randomNumber(0, rating2problems[gym_ending_range + ""].length - 1);
   const problem1 = rating2problems[gym_starting_range + ""][r1];
   const problem2 = rating2problems[gym_ending_range + ""][r2];
-
+  console.log(Object.keys(rating2problems));
   console.log(
     `https://codeforces.com/contest/${problem1.contestId}/problem/${
       problem1.index
-    } of rating ${problem1.rating} left ${
+    } of rating ${problem1.rating}  ${
       rating2problems[gym_starting_range + ""].length
-    }`
+    }[${r1 + 1}]`
   );
   console.log(
     `https://codeforces.com/contest/${problem2.contestId}/problem/${
       problem2.index
-    } of rating ${problem2.rating} left ${
+    } of rating ${problem2.rating} ${
       rating2problems[gym_ending_range + ""].length
-    }`
+    }[${r2 + 1}]`
   );
 } catch (e) {
   console.log("error occured", e);

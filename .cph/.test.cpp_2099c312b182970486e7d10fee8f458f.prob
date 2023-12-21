@@ -1,0 +1,1 @@
+{"name":"Local: test","url":"/home/amit/system/cf-randomizer/test.cpp","tests":[{"id":1699414455429,"input":"1\n8 2\n10000001","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/amit/system/cf-randomizer/test.cpp","group":"local","local":true}
