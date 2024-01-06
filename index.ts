@@ -1,4 +1,4 @@
-const practice = "15-u";
+const practice = "16-u";
 
 function randomNumber(min: number, max: number) {
   return Number(Math.floor(Math.random() * (max - min) + min));
