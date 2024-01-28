@@ -1,5 +1,5 @@
-const practice = "16-u";
-
+const practice = 14;
+const users = ["HypotheticalRed", "pahad_charas_chai"];
 function randomNumber(min: number, max: number) {
   return Number(Math.floor(Math.random() * (max - min) + min));
 }
@@ -38,34 +38,47 @@ const laterProblems = laterText.split("\n").map((s) => {
   return splittedArray[2] + ":" + splittedArray[4];
 });
 const markedProblems = deadProblems.concat(laterProblems);
-console.log(`markedProblems: `, markedProblems);
+const getSumisionId = (s) => {
+  return s.problem.contestId + ":" + s.problem.index;
+};
 try {
   const data = await fetch("https://codeforces.com/api/problemset.problems");
   const allProblems = await data.json();
-  const dd = await fetch(
-    "https://codeforces.com/api/user.status?handle=pahad_charas_chai&from=1"
+
+  const usersSubmissions = await Promise.all(
+    users.map((user) =>
+      fetch(`https://codeforces.com/api/user.status?handle=${user}&from=1`)
+    )
   );
-  const submissions = await dd.json();
-  const rawSubmissions = submissions.result;
+  const usersSubmissionsInJson = await Promise.all(
+    usersSubmissions.map((s) => s.json())
+  );
+  console.log(`usersSubmissions: `, usersSubmissionsInJson[0].result);
+
+  const rawSubmissions = usersSubmissionsInJson.map((s) => s.result);
   const rawProblems = allProblems.result.problems;
-  const range = practice.split("-");
-  let num = Number(range[0]) * 100;
-  console.log(`num: `, num, practice);
-  const gym_starting_range = range[1] == "l" ? num : num - 100;
-  const gym_ending_range = range[1] == "l" ? num + 100 : num;
+  const range = practice * 100;
+  const gym_starting_range = range;
+  const gym_ending_range = range + 100;
   const lastContest = 1893;
   const difficulty = 1;
 
   const starting_contest = 1220;
-  const nonPracticeSet = rawSubmissions.filter((s) => {
-    return (
-      s.verdict == "OK" &&
-      s.problem.rating >= gym_starting_range &&
-      s.problem.rating <= gym_ending_range
-      // || s.problem.rating == 1500
-    );
+
+  let userSubmissionMap = {};
+  rawSubmissions.forEach((sd) => {
+    sd.forEach((s) => {
+      if (
+        s.verdict == "OK" &&
+        s.problem.rating >= gym_starting_range &&
+        s.problem.rating <= gym_ending_range
+        // || s.problem.rating == 1500
+      ) {
+        userSubmissionMap[getSumisionId(s)] = s;
+      }
+    });
   });
-  console.log(`allproblems: `, rawProblems.length);
+  let nonPracticeSet = Object.values(userSubmissionMap);
   let notSolved = rawProblems.filter((c) => {
     return (
       c.contestId >= starting_contest &&
@@ -74,7 +87,6 @@ try {
       c.rating >= gym_starting_range
     );
   });
-  console.log(`inrange: `, notSolved.length);
 
   let deadFiltered = notSolved.filter((c) => {
     let isNotSolved = true;
@@ -88,7 +100,6 @@ try {
 
     return isNotSolved;
   });
-  console.log(`notsolved: `, deadFiltered.length);
 
   let gymProblems = deadFiltered.filter((c) => {
     let isNotSolved = true;
@@ -130,18 +141,18 @@ try {
   const problem2 = rating2problems[gym_ending_range + ""][r2];
   console.log(Object.keys(rating2problems));
   console.log(
-    `https://codeforces.com/contest/${problem1.contestId}/problem/${
-      problem1.index
-    } of rating ${problem1.rating}  ${
-      rating2problems[gym_starting_range + ""].length
-    }[${r1 + 1}]`
-  );
-  console.log(
     `https://codeforces.com/contest/${problem2.contestId}/problem/${
       problem2.index
     } of rating ${problem2.rating} ${
       rating2problems[gym_ending_range + ""].length
     }[${r2 + 1}]`
+  );
+  console.log(
+    `https://codeforces.com/contest/${problem1.contestId}/problem/${
+      problem1.index
+    } of rating ${problem1.rating}  ${
+      rating2problems[gym_starting_range + ""].length
+    }[${r1 + 1}]`
   );
 } catch (e) {
   console.log("error occured", e);

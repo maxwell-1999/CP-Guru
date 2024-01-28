@@ -1,7 +1,7 @@
 fn main() {
-    let mut x = String::from("hello");
-    let y = x;
-    x.push_str(", world");
+    let  x = {a:"amot"};
+    let &mut y = x;
+    y.push_str(", world");
     // mutate_str(&mut x);
     println!("{} ",x); // Accessing x after modifying it through the reference
 }
