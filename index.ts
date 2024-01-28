@@ -1,5 +1,5 @@
 const practice = 14;
-const users = ["HypotheticalRed", "pahad_charas_chai"];
+const users = ["sudheerreddy14", "pahad_charas_chai"];
 function randomNumber(min: number, max: number) {
   return Number(Math.floor(Math.random() * (max - min) + min));
 }
