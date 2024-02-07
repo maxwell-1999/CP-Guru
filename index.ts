@@ -1,8 +1,21 @@
+import { appendFile } from "node:fs/promises";
 const practice = 14;
-const users = ["sudheerreddy14", "pahad_charas_chai"];
+const users = [
+  "akumar_23",
+  "chaotic_peace",
+  "IgrisTheRed",
+  "sudheerreddy14",
+  "pahad_charas_chai",
+];
+
 function randomNumber(min: number, max: number) {
   return Number(Math.floor(Math.random() * (max - min) + min));
 }
+const atcoderDB = Bun.file("./AtcodderSelected.txt");
+const atcoderDBText = await atcoderDB.text();
+const problems = atcoderDBText.split("\n");
+const writer = atcoderDB.writer();
+
 function shuffle(array) {
   let currentIndex = array.length,
     randomIndex;
@@ -22,6 +35,7 @@ function shuffle(array) {
 
   return array;
 }
+
 const markedText = await Bun.file("./dead_marked.txt").text();
 let deadProblems = markedText
   .split("\n")
@@ -53,7 +67,6 @@ try {
   const usersSubmissionsInJson = await Promise.all(
     usersSubmissions.map((s) => s.json())
   );
-  console.log(`usersSubmissions: `, usersSubmissionsInJson[0].result);
 
   const rawSubmissions = usersSubmissionsInJson.map((s) => s.result);
   const rawProblems = allProblems.result.problems;
@@ -139,7 +152,22 @@ try {
   const r2 = randomNumber(0, rating2problems[gym_ending_range + ""].length - 1);
   const problem1 = rating2problems[gym_starting_range + ""][r1];
   const problem2 = rating2problems[gym_ending_range + ""][r2];
-  console.log(Object.keys(rating2problems));
+  let atcoderRandomProblem = randomNumber(130, 330);
+  const actask = "c";
+  const problemIdentifier = `${atcoderRandomProblem}:${actask}`;
+  console.log(`problems: `, problems);
+  function isProblemExist(p) {
+    return problems.includes(p);
+  }
+  while (isProblemExist(problemIdentifier)) {
+    atcoderRandomProblem = randomNumber(190, 330);
+  }
+
+  await appendFile("./AtcodderSelected.txt", problemIdentifier + "\n");
+
+  const atcoderProblem = `https://atcoder.jp/contests/abc${atcoderRandomProblem}/tasks/abc${atcoderRandomProblem}_${actask}`;
+
+  console.log("Today's problems:");
   console.log(
     `https://codeforces.com/contest/${problem2.contestId}/problem/${
       problem2.index
@@ -154,6 +182,7 @@ try {
       rating2problems[gym_starting_range + ""].length
     }[${r1 + 1}]`
   );
+  console.log(`${atcoderProblem} of ABC-${atcoderRandomProblem}`);
 } catch (e) {
   console.log("error occured", e);
 }

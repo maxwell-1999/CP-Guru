@@ -1,0 +1,1 @@
+{"name":"Local: 14today","url":"/home/amit/system/Competetive Programing/14today.cpp","tests":[{"id":1706525658650,"input":"4\n3 3\nabc\nbcd\n4 2\nabba\nazza\n2 1\nzz\naa\n6 2\naaabba\nddddcc\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/home/amit/system/Competetive Programing/14today.cpp","group":"local","local":true}
