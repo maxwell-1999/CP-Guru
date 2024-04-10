@@ -4,47 +4,15 @@ using namespace std;
 #define yes "YES"
 #define int long long
 #define no "NO"
+#define deb(x)cout << (#x) << ": "; _p(x);
+template <typename T>
+void _p(T t) { cout << t; }
 
 void solve(int test_case, int total_cases)
 {
     int n;
     cin >> n;
-    string s, t;
-    cin >> s >> t;
-    int idx = 0;
-    vector<int> scnt(3);
-    vector<int> tcnt(3);
-    while (idx < n)
-    {
-        if (t[idx] == 'a' || s[idx] == 'a')
-        {
-            if (scnt[2] != tcnt[2])
-            {
-                cout << no;
-                return;
-            }
-        }
-        if (t[idx] == 'c' || s[idx] == 'c')
-        {
-            if (scnt[0] != tcnt[0])
-            {
-                cout << no;
-                return;
-            }
-        }
-        scnt[s[idx] - 'a']++;
-        tcnt[s[idx] - 'a']++;
-        idx++;
-    }
-    for (int i = 0; i < 3; i++)
-    {
-        if (scnt[i] != tcnt[i])
-        {
-            cout << no;
-            return;
-        }
-    }
-    cout << yes;
+    deb(n)
 }
 signed main()
 {
@@ -53,9 +21,10 @@ signed main()
     int t{1};
     cin >> t;
     int total_cases = t;
+    int s = 1;
     while (t--)
     {
-        solve(t + 1, total_cases);
+        solve(s++, total_cases);
         cout << newl;
     }
     return 0;

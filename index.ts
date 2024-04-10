@@ -5,7 +5,7 @@ const users = [
   "chaotic_peace",
   "IgrisTheRed",
   "sudheerreddy14",
-  "pahad_charas_chai",
+  // "pahad_charas_chai",
 ];
 
 function randomNumber(min: number, max: number) {
