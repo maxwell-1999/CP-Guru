@@ -73,7 +73,7 @@ try {
   const range = practice * 100;
   const gym_starting_range = range;
   const gym_ending_range = range + 100;
-  const lastContest = 1893;
+  const lastContest = 1075;
   const difficulty = 1;
 
   const starting_contest = 1220;

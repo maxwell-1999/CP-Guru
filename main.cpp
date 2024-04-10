@@ -12,7 +12,19 @@ void solve(int test_case, int total_cases)
 {
     int n;
     cin >> n;
-    deb(n)
+    int k;cin>>k;
+    if(k==n){
+        for(int i = 0;i<n;i++){
+            cout<<1<<" ";
+        }
+    }else if(k==1){
+        for(int i = 0;i<n;i++){
+            cout<<i+1<<" ";
+        }
+    }else{
+        cout<<-1;
+    }
+    // deb(n)
 }
 signed main()
 {
