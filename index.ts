@@ -1,12 +1,22 @@
 import { appendFile } from "node:fs/promises";
-const practice = 14;
-const users = [
-  "akumar_23",
-  "chaotic_peace",
-  "IgrisTheRed",
-  "sudheerreddy14",
-  // "pahad_charas_chai",
-];
+const config = {
+  practice: 16,
+  contestRange: {
+    start: 1077,
+    end: 1450,
+  },
+  gymRange: {
+    start: 1600,
+    end: 1800,
+  },
+  atcodder: {
+    startingContest: 100,
+    endingContest: 300,
+  },
+  users: ["pahad_charas_chai"],
+};
+const practice = config.practice;
+const users = config.users;
 
 function randomNumber(min: number, max: number) {
   return Number(Math.floor(Math.random() * (max - min) + min));
@@ -70,13 +80,11 @@ try {
 
   const rawSubmissions = usersSubmissionsInJson.map((s) => s.result);
   const rawProblems = allProblems.result.problems;
-  const range = practice * 100;
-  const gym_starting_range = range;
-  const gym_ending_range = range + 100;
-  const lastContest = 1075;
-  const difficulty = 1;
+  const gym_starting_range = config.gymRange.start;
+  const gym_ending_range = config.gymRange.end;
+  const lastContest = config.contestRange.end;
 
-  const starting_contest = 1220;
+  const starting_contest = config.contestRange.start;
 
   let userSubmissionMap = {};
   rawSubmissions.forEach((sd) => {
@@ -92,6 +100,7 @@ try {
     });
   });
   let nonPracticeSet = Object.values(userSubmissionMap);
+
   let notSolved = rawProblems.filter((c) => {
     return (
       c.contestId >= starting_contest &&
@@ -149,23 +158,29 @@ try {
     0,
     rating2problems[gym_starting_range + ""].length - 1
   );
+
   const r2 = randomNumber(0, rating2problems[gym_ending_range + ""].length - 1);
   const problem1 = rating2problems[gym_starting_range + ""][r1];
   const problem2 = rating2problems[gym_ending_range + ""][r2];
-  let atcoderRandomProblem = randomNumber(130, 330);
-  const actask = "c";
-  const problemIdentifier = `${atcoderRandomProblem}:${actask}`;
-  console.log(`problems: `, problems);
+  let atcoderRandomProblem = randomNumber(
+    config.atcodder.startingContest,
+    config.atcodder.endingContest
+  );
+  const actask = "d";
+  const problemIdentifier = `${atcoderRandomProblem}`;
   function isProblemExist(p) {
     return problems.includes(p);
   }
   while (isProblemExist(problemIdentifier)) {
-    atcoderRandomProblem = randomNumber(190, 330);
+    atcoderRandomProblem = randomNumber(
+      config.atcodder.startingContest,
+      config.atcodder.endingContest
+    );
   }
 
   await appendFile("./AtcodderSelected.txt", problemIdentifier + "\n");
 
-  const atcoderProblem = `https://atcoder.jp/contests/abc${atcoderRandomProblem}/tasks/abc${atcoderRandomProblem}_${actask}`;
+  const atcoderProblem = `https://atcoder.jp/contests/abc${atcoderRandomProblem}`;
 
   console.log("Today's problems:");
   console.log(

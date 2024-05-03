@@ -7,7 +7,6 @@ using namespace std;
 #define deb(x) cout << (#x) << ": " << x << newl;
 // #define deb(x) ;
 
-int mod = 1000000007;
 void solve(int test_case, int total_cases)
 {
     int n;
