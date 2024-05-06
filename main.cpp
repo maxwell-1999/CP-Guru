@@ -20,7 +20,7 @@ void solve()
 
   for (int i = 1; i < n; i++)
   {
-    left[i] = mx + k + r--;
+    left[i] = max(mx + k, a[i]) + r--;
     if (mx + k < a[i])
     {
       mx = a[i];
@@ -37,7 +37,7 @@ void solve()
   mx = a[n - 1], k = 1;
   for (int i = n - 2; i >= 0; i--)
   {
-    right[i] = mx + k + r--;
+    right[i] = max(mx + k, a[i]) + r--;
     if (mx + k < a[i])
     {
       mx = a[i];
