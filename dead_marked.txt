@@ -11,3 +11,4 @@ https://codeforces.com/contest/1351/problem/C
 https://codeforces.com/contest/1250/problem/L
 https://codeforces.com/contest/1769/problem/B2
 https://codeforces.com/contest/1346/problem/D
+https://codeforces.com/contest/1244/problem/D

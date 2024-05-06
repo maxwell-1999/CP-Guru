@@ -6,7 +6,7 @@ const config = {
     end: 1450,
   },
   gymRange: {
-    start: 1600,
+    start: 1700,
     end: 1800,
   },
   atcodder: {
